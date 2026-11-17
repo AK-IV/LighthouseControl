@@ -70,7 +70,7 @@ fun MainScreen(vm: MainViewModel = viewModel()) {
     var editing by remember { mutableStateOf<StationDraft?>(null) }
     var deleting by remember { mutableStateOf<Station?>(null) }
 
-    // --- разрешения и включение Bluetooth ---
+    // --- permissions and enabling Bluetooth ---
     var afterPermission by remember { mutableStateOf<(() -> Unit)?>(null) }
     val enableBluetooth = rememberLauncherForActivityResult(
         ActivityResultContracts.StartActivityForResult()
@@ -87,7 +87,7 @@ fun MainScreen(vm: MainViewModel = viewModel()) {
         }
     }
 
-    /** Выполнить действие, предварительно проверив разрешения и что Bluetooth включён. */
+    /** Runs an action after checking permissions and that Bluetooth is enabled. */
     fun withBluetooth(action: () -> Unit) {
         if (!BlePermissions.granted(context)) {
             afterPermission = action
@@ -104,7 +104,7 @@ fun MainScreen(vm: MainViewModel = viewModel()) {
     LaunchedEffect(Unit) {
         vm.messages.collect { snackbar.showSnackbar(it) }
     }
-    // При открытии приложения читаем реальное состояние станций v2.0.
+    // Read the actual state of v2.0 stations when the app opens.
     LaunchedEffect(Unit) {
         if (BlePermissions.granted(context) && vm.bluetoothEnabled) vm.refresh()
     }

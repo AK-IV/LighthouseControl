@@ -15,7 +15,7 @@ fun LighthouseTheme(content: @Composable () -> Unit) {
     val dark = isSystemInDarkTheme()
     val context = LocalContext.current
     val colors = when {
-        // Android 12+: цвета подстраиваются под обои
+        // Android 12+: colors adapt to the wallpaper
         Build.VERSION.SDK_INT >= Build.VERSION_CODES.S ->
             if (dark) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         dark -> darkColorScheme()

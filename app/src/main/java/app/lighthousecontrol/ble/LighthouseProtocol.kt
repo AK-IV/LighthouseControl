@@ -7,14 +7,14 @@ import java.util.UUID
 enum class PowerAction { ON, SLEEP, STANDBY }
 
 /**
- * Протоколы управления питанием базовых станций по BLE.
+ * BLE power control protocols for base stations.
  *
- * v2.0 (Valve Index и др.): один байт в характеристику питания.
- *   0x00 — сон, 0x01 — включить, 0x02 — standby (мотор крутится, лазеры выключены).
+ * v2.0 (Valve Index and others): a single byte written to the power characteristic.
+ *   0x00 — sleep, 0x01 — on, 0x02 — standby (motor spinning, lasers off).
  *
- * v1.0 (HTC Vive): 20-байтная команда в характеристику 0000cb01-...
- *   Включить: 12 00 00 00 + ID (4 байта, little-endian) + 12 нулей
- *   Сон:      12 02 00 01 + ID (4 байта, little-endian) + 12 нулей
+ * v1.0 (HTC Vive): a 20-byte command written to characteristic 0000cb01-...
+ *   On:    12 00 00 00 + ID (4 bytes, little-endian) + 12 zero bytes
+ *   Sleep: 12 02 00 01 + ID (4 bytes, little-endian) + 12 zero bytes
  */
 object LighthouseProtocol {
 
@@ -33,13 +33,13 @@ object LighthouseProtocol {
 
     private fun isHex(c: Char) = c in '0'..'9' || c in 'A'..'F'
 
-    /** Приводит ID к виду «1A2B3C4D». Возвращает null, если это не 8 hex-символов. */
+    /** Normalizes an ID to the "1A2B3C4D" form. Returns null if it isn't 8 hex characters. */
     fun normalizeV1Id(raw: String): String? {
         val s = raw.trim().uppercase().removePrefix("0X")
         return if (s.length == 8 && s.all(::isHex)) s else null
     }
 
-    /** Hex-хвост из имени «HTC BS XXXX» — для подсказки, что ID введён верно. */
+    /** Hex suffix of the "HTC BS XXXX" name, used to hint whether the ID was entered correctly. */
     fun v1NameSuffix(bleName: String): String =
         bleName.removePrefix(V1_PREFIX).trim().uppercase().takeLastWhile(::isHex)
 
@@ -73,7 +73,7 @@ object LighthouseProtocol {
         return cmd
     }
 
-    /** Разбор значения, прочитанного из характеристики питания v2.0. */
+    /** Parses a value read from the v2.0 power characteristic. */
     fun parseV2State(value: ByteArray?): StationPowerState {
         val b = value?.firstOrNull()?.toInt()?.and(0xFF) ?: return StationPowerState.UNKNOWN
         return when (b) {

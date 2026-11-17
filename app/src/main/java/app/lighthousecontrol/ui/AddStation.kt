@@ -37,7 +37,7 @@ import app.lighthousecontrol.ble.ScannedStation
 import app.lighthousecontrol.data.Station
 import app.lighthousecontrol.data.StationType
 
-/** Черновик станции для диалога добавления/редактирования. */
+/** Station draft for the add/edit dialog. */
 data class StationDraft(
     val mac: String,
     val bleName: String,

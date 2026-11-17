@@ -19,8 +19,8 @@ data class StationStatus(
 )
 
 /**
- * Единая точка управления станциями: её используют и экран, и плитка в шторке.
- * Хранит текущий статус каждой станции (по MAC) для отображения в UI.
+ * Single entry point for controlling stations, shared by the screen and the Quick Settings tile.
+ * Keeps the current status of each station (by MAC) for display in the UI.
  */
 class StationController(
     private val repository: StationRepository,
@@ -29,7 +29,7 @@ class StationController(
     private val _status = MutableStateFlow<Map<String, StationStatus>>(emptyMap())
     val status: StateFlow<Map<String, StationStatus>> = _status.asStateFlow()
 
-    /** Отправить команду одной станции. Возвращает true при успехе. */
+    /** Sends a command to a single station. Returns true on success. */
     suspend fun apply(station: Station, action: PowerAction): Boolean = runOp(station) {
         ble.sendPower(station, action)
         when (action) {
@@ -39,12 +39,12 @@ class StationController(
         }
     }
 
-    /** Команда всем станциям. Возвращает число станций, которые не ответили. */
+    /** Sends a command to all stations. Returns the number of stations that didn't respond. */
     suspend fun applyToAll(action: PowerAction): Int {
         repository.lastAllAction = action
         var failed = 0
         for (station in repository.stations.value) {
-            // У v1.0 нет standby — для неё используем сон.
+            // v1.0 has no standby, so use sleep instead.
             val effective =
                 if (action == PowerAction.STANDBY && station.type == StationType.V1) PowerAction.SLEEP
                 else action
@@ -53,7 +53,7 @@ class StationController(
         return failed
     }
 
-    /** Прочитать реальное состояние (только v2.0; v1.0 его не сообщает). */
+    /** Reads the actual state (v2.0 only; v1.0 doesn't report it). */
     suspend fun refresh(station: Station) {
         if (station.type != StationType.V2) return
         runOp(station) { ble.readV2State(station) }

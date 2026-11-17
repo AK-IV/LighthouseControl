@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- Android 11 и ниже -->
+    <!-- Android 11 and below -->
     <uses-permission android:name="android.permission.BLUETOOTH" android:maxSdkVersion="30" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" android:maxSdkVersion="30" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" android:maxSdkVersion="30" />
@@ -34,7 +34,7 @@
             </intent-filter>
         </activity>
 
-        <!-- Плитка в шторке: включить / усыпить все станции -->
+        <!-- Quick Settings tile: turn all stations on / put them to sleep -->
         <service
             android:name=".tile.PowerTileService"
             android:exported="true"

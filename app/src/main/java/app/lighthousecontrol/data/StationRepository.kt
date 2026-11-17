@@ -10,8 +10,8 @@ import org.json.JSONArray
 import org.json.JSONObject
 
 /**
- * Хранит список станций (MAC, тип, название, ID для v1) в SharedPreferences.
- * Данные переживают перезапуск приложения и телефона.
+ * Stores the station list (MAC, type, name, v1 ID) in SharedPreferences.
+ * The data survives app and device restarts.
  */
 class StationRepository(context: Context) {
 
@@ -20,7 +20,7 @@ class StationRepository(context: Context) {
     private val _stations = MutableStateFlow(load())
     val stations: StateFlow<List<Station>> = _stations.asStateFlow()
 
-    /** Последняя команда «для всех» — по ней плитка решает, включать или усыплять. */
+    /** Last "all stations" command; the tile uses it to decide whether to turn on or sleep. */
     var lastAllAction: PowerAction?
         get() = prefs.getString(KEY_LAST_ALL, null)
             ?.let { runCatching { PowerAction.valueOf(it) }.getOrNull() }

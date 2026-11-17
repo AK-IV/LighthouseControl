@@ -15,9 +15,9 @@ import java.io.IOException
 import java.util.UUID
 
 /**
- * Одно GATT-подключение к станции, обёрнутое в suspend-функции.
- * Используется так: connect() → discover() → write()/read() → close().
- * Каждая операция ждёт свой колбэк, поэтому всё идёт строго по очереди.
+ * A single GATT connection to a station, wrapped in suspend functions.
+ * Usage: connect() → discover() → write()/read() → close().
+ * Each operation waits for its own callback, so everything runs strictly in sequence.
  */
 @SuppressLint("MissingPermission")
 internal class GattSession(
@@ -82,7 +82,7 @@ internal class GattSession(
         failAll(IOException(context.getString(R.string.err_closed)))
     }
 
-    // --- внутреннее ---
+    // --- internals ---
 
     private fun requireGatt(): BluetoothGatt = gatt ?: throw IOException(context.getString(R.string.err_not_connected))
 
@@ -109,7 +109,7 @@ internal class GattSession(
         pendingRead?.completeExceptionally(e)
     }
 
-    // --- колбэки (приходят из потоков Binder) ---
+    // --- callbacks (delivered on Binder threads) ---
 
     override fun onConnectionStateChange(g: BluetoothGatt, status: Int, newState: Int) {
         if (status == BluetoothGatt.GATT_SUCCESS && newState == BluetoothProfile.STATE_CONNECTED) {
@@ -150,8 +150,8 @@ internal class GattSession(
         handleRead(value, status)
     }
 
-    /** Android 12 и ниже. */
-    @Deprecated("Используется только до Android 13")
+    /** Android 12 and below. */
+    @Deprecated("Used only below Android 13")
     @Suppress("DEPRECATION")
     override fun onCharacteristicRead(
         g: BluetoothGatt,

@@ -30,9 +30,9 @@ data class ScannedStation(
 )
 
 /**
- * Сканирование и отправка команд базовым станциям.
- * Все GATT-операции идут через один Mutex: Android плохо переносит
- * параллельные подключения, поэтому станции обрабатываются по одной.
+ * Scanning and sending commands to base stations.
+ * All GATT operations go through a single Mutex: Android handles concurrent
+ * connections poorly, so stations are processed one at a time.
  */
 @SuppressLint("MissingPermission")
 class LighthouseBle(private val context: Context) {
@@ -44,7 +44,7 @@ class LighthouseBle(private val context: Context) {
 
     val isEnabled: Boolean get() = adapter?.isEnabled == true
 
-    /** Поток найденных станций. Сканирование идёт, пока поток собирается. */
+    /** Flow of discovered stations. Scanning runs while the flow is being collected. */
     fun scan(): Flow<ScannedStation> = callbackFlow {
         val scanner = adapter?.takeIf { it.isEnabled }?.bluetoothLeScanner
         if (scanner == null) {
@@ -83,7 +83,7 @@ class LighthouseBle(private val context: Context) {
         }
     }
 
-    /** Чтение текущего состояния. Работает только для v2.0. */
+    /** Reads the current state. Works for v2.0 only. */
     suspend fun readV2State(station: Station): StationPowerState {
         require(station.type == StationType.V2)
         return mutex.withLock {
@@ -109,7 +109,7 @@ class LighthouseBle(private val context: Context) {
         }
     }
 
-    /** BLE на Android часто сбоит с первого раза (ошибка 133 и т. п.), поэтому повторяем. */
+    /** BLE on Android often fails on the first attempt (error 133 etc.), so we retry. */
     private suspend fun <T> withRetry(block: suspend () -> T): T {
         var last: Throwable? = null
         repeat(ATTEMPTS) { attempt ->

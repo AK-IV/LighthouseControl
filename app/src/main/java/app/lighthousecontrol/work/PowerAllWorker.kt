@@ -19,9 +19,9 @@ import app.lighthousecontrol.lighthouseApp
 import app.lighthousecontrol.tile.PowerTileService
 
 /**
- * Команда «всем станциям» в фоне. Через WorkManager, чтобы операция
- * завершилась, даже если шторку закрыли или приложение свернули
- * (обход всех станций может занять несколько секунд).
+ * Runs an "all stations" command in the background. Uses WorkManager so the
+ * operation completes even if Quick Settings is closed or the app is backgrounded
+ * (going through all stations can take several seconds).
  */
 class PowerAllWorker(
     context: Context,
@@ -39,7 +39,7 @@ class PowerAllWorker(
         return Result.success()
     }
 
-    /** Нужен только на Android 11 и ниже, где срочная задача запускается как foreground-сервис. */
+    /** Only needed on Android 11 and below, where expedited work runs as a foreground service. */
     override suspend fun getForegroundInfo(): ForegroundInfo {
         val nm = applicationContext.getSystemService(NotificationManager::class.java)
         nm.createNotificationChannel(

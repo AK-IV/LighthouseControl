@@ -96,7 +96,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         PowerTileService.requestUpdate(getApplication<Application>())
     }
 
-    /** Читает реальное состояние станций v2.0. */
+    /** Reads the actual state of v2.0 stations. */
     fun refresh() {
         viewModelScope.launch {
             stations.value

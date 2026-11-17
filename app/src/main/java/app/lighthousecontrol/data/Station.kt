@@ -3,26 +3,26 @@ package app.lighthousecontrol.data
 import androidx.annotation.StringRes
 import app.lighthousecontrol.R
 
-/** Версия базовой станции. */
+/** Base station version. */
 enum class StationType(val title: String) {
     V1("v1.0"),
     V2("v2.0"),
 }
 
-/** Сохранённая станция. */
+/** A saved station. */
 data class Station(
-    /** MAC-адрес — по нему подключаемся без повторного сканирования. */
+    /** MAC address, used to connect without scanning again. */
     val mac: String,
-    /** Имя, под которым станция видна по Bluetooth (HTC BS ... / LHB-...). */
+    /** The station's Bluetooth name (HTC BS ... / LHB-...). */
     val bleName: String,
     val type: StationType,
-    /** Название, которое задал пользователь («Левая», «Правая»). */
+    /** User-defined name ("Left", "Right"). */
     val label: String,
-    /** Только для v1.0: 8 hex-символов с наклейки на задней стороне. */
+    /** v1.0 only: 8 hex characters from the sticker on the back. */
     val v1Id: String? = null,
 )
 
-/** Состояние питания станции. */
+/** Station power state. */
 enum class StationPowerState(@StringRes val titleRes: Int) {
     UNKNOWN(R.string.power_state_unknown),
     ON(R.string.power_state_on),

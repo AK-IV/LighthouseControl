@@ -15,8 +15,8 @@ import app.lighthousecontrol.lighthouseApp
 import app.lighthousecontrol.work.PowerAllWorker
 
 /**
- * Плитка в шторке быстрых настроек.
- * Нажатие: если станции «включены» — усыпить все, иначе — включить все.
+ * Quick Settings tile.
+ * On tap: if stations are "on", put them all to sleep; otherwise turn them all on.
  */
 class PowerTileService : TileService() {
 
@@ -32,7 +32,7 @@ class PowerTileService : TileService() {
             app.ble.isEnabled &&
             app.repository.stations.value.isNotEmpty()
         if (!canRun) {
-            // Нет разрешений, Bluetooth выключен или станции не добавлены — открываем приложение.
+            // Missing permissions, Bluetooth off, or no stations added: open the app instead.
             openApp()
             return
         }

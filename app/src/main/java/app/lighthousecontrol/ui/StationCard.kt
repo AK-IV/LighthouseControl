@@ -120,7 +120,7 @@ private fun StatusBadge(station: Station, status: StationStatus) {
         return
     }
     if (status.power == StationPowerState.UNKNOWN) return
-    // v1.0 не сообщает состояние — показываем последнюю отправленную команду.
+    // v1.0 doesn't report its state, so show the last command sent.
     val title = stringResource(status.power.titleRes)
     val label = if (station.type == StationType.V1) "$title*" else title
     AssistChip(onClick = {}, label = { Text(label) })
