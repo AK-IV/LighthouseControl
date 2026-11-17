@@ -7,6 +7,7 @@ import android.bluetooth.le.ScanCallback
 import android.bluetooth.le.ScanResult
 import android.bluetooth.le.ScanSettings
 import android.content.Context
+import app.lighthousecontrol.R
 import app.lighthousecontrol.data.Station
 import app.lighthousecontrol.data.StationPowerState
 import app.lighthousecontrol.data.StationType
@@ -47,7 +48,7 @@ class LighthouseBle(private val context: Context) {
     fun scan(): Flow<ScannedStation> = callbackFlow {
         val scanner = adapter?.takeIf { it.isEnabled }?.bluetoothLeScanner
         if (scanner == null) {
-            close(IOException("Bluetooth выключен"))
+            close(IOException(context.getString(R.string.err_bt_off)))
             return@callbackFlow
         }
         val callback = object : ScanCallback() {
@@ -58,7 +59,7 @@ class LighthouseBle(private val context: Context) {
             }
 
             override fun onScanFailed(errorCode: Int) {
-                close(IOException("Ошибка сканирования (код $errorCode)"))
+                close(IOException(context.getString(R.string.err_scan_code, errorCode)))
             }
         }
         val settings = ScanSettings.Builder()
@@ -73,7 +74,7 @@ class LighthouseBle(private val context: Context) {
             StationType.V2 ->
                 LighthouseProtocol.V2_POWER to LighthouseProtocol.v2Command(action)
             StationType.V1 -> {
-                val id = station.v1Id ?: throw IOException("Не задан ID станции")
+                val id = station.v1Id ?: throw IOException(context.getString(R.string.err_no_id))
                 LighthouseProtocol.V1_CONTROL to LighthouseProtocol.v1Command(action, id)
             }
         }
@@ -95,7 +96,7 @@ class LighthouseBle(private val context: Context) {
     }
 
     private suspend fun <T> withSession(mac: String, block: suspend (GattSession) -> T): T {
-        val a = adapter?.takeIf { it.isEnabled } ?: throw IOException("Bluetooth выключен")
+        val a = adapter?.takeIf { it.isEnabled } ?: throw IOException(context.getString(R.string.err_bt_off))
         val session = GattSession(context, a.getRemoteDevice(mac))
         try {
             return withTimeout(SESSION_TIMEOUT_MS) {
@@ -115,7 +116,7 @@ class LighthouseBle(private val context: Context) {
             try {
                 return block()
             } catch (e: TimeoutCancellationException) {
-                last = IOException("Станция не ответила")
+                last = IOException(context.getString(R.string.err_no_response))
             } catch (e: CancellationException) {
                 throw e
             } catch (e: Exception) {
@@ -123,7 +124,7 @@ class LighthouseBle(private val context: Context) {
             }
             delay(RETRY_DELAY_MS * (attempt + 1))
         }
-        throw last ?: IOException("Неизвестная ошибка")
+        throw last ?: IOException(context.getString(R.string.err_unknown))
     }
 
     private companion object {

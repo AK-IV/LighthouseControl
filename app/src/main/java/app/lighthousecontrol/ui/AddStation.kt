@@ -28,8 +28,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
+import app.lighthousecontrol.R
 import app.lighthousecontrol.ble.LighthouseProtocol
 import app.lighthousecontrol.ble.ScannedStation
 import app.lighthousecontrol.data.Station
@@ -82,15 +84,15 @@ fun ScanSheet(
                 .padding(bottom = 24.dp)
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Text("Поиск станций", style = MaterialTheme.typography.titleLarge, modifier = Modifier.weight(1f))
+                Text(stringResource(R.string.scan_title), style = MaterialTheme.typography.titleLarge, modifier = Modifier.weight(1f))
                 if (scanning) {
                     CircularProgressIndicator(Modifier.size(24.dp), strokeWidth = 2.dp)
                 } else {
-                    TextButton(onClick = onRescan) { Text("Повторить") }
+                    TextButton(onClick = onRescan) { Text(stringResource(R.string.action_retry)) }
                 }
             }
             Text(
-                "Станции должны быть включены в розетку. Держите телефон поближе к ним.",
+                stringResource(R.string.scan_hint),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
@@ -98,8 +100,7 @@ fun ScanSheet(
 
             if (results.isEmpty() && !scanning) {
                 Text(
-                    "Новых станций не найдено. Уже добавленные станции здесь не показываются. " +
-                        "На Android 11 и ниже для поиска нужна включённая геолокация.",
+                    stringResource(R.string.scan_empty),
                     style = MaterialTheme.typography.bodyMedium,
                     modifier = Modifier.padding(vertical = 16.dp),
                 )
@@ -109,7 +110,7 @@ fun ScanSheet(
                 items(results, key = { it.mac }) { found ->
                     ListItem(
                         headlineContent = { Text(found.name) },
-                        supportingContent = { Text("${found.type.title} · сигнал ${found.rssi} dBm") },
+                        supportingContent = { Text(stringResource(R.string.scan_item_details, found.type.title, found.rssi)) },
                         modifier = Modifier.clickable { onPick(found) },
                     )
                 }
@@ -136,7 +137,7 @@ fun StationDialog(
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text(if (draft.isNew) "Добавить станцию" else "Изменить станцию") },
+        title = { Text(stringResource(if (draft.isNew) R.string.dialog_add_title else R.string.dialog_edit_title)) },
         text = {
             Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                 Text(
@@ -147,8 +148,8 @@ fun StationDialog(
                 OutlinedTextField(
                     value = label,
                     onValueChange = { label = it },
-                    label = { Text("Название") },
-                    placeholder = { Text("Например, «Левая»") },
+                    label = { Text(stringResource(R.string.field_label)) },
+                    placeholder = { Text(stringResource(R.string.field_label_hint)) },
                     singleLine = true,
                 )
                 if (isV1) {
@@ -160,18 +161,18 @@ fun StationDialog(
                                 .filter { it in '0'..'9' || it in 'A'..'F' }
                                 .take(8)
                         },
-                        label = { Text("ID станции") },
-                        placeholder = { Text("8 символов, например 1A2B3C4D") },
+                        label = { Text(stringResource(R.string.field_id)) },
+                        placeholder = { Text(stringResource(R.string.field_id_hint)) },
                         singleLine = true,
                         isError = id.isNotEmpty() && idInvalid,
                         keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Characters),
                         supportingText = {
                             Text(
                                 when {
-                                    id.isEmpty() -> "Напечатан на задней стороне станции"
-                                    idInvalid -> "Нужно ровно 8 символов: 0–9 и A–F"
-                                    suffixMismatch -> "Имя станции заканчивается на $nameSuffix — проверьте ID"
-                                    else -> "ID выглядит корректно"
+                                    id.isEmpty() -> stringResource(R.string.id_help_empty)
+                                    idInvalid -> stringResource(R.string.id_help_invalid)
+                                    suffixMismatch -> stringResource(R.string.id_help_mismatch, nameSuffix)
+                                    else -> stringResource(R.string.id_help_ok)
                                 }
                             )
                         },
@@ -193,10 +194,10 @@ fun StationDialog(
                         )
                     )
                 },
-            ) { Text("Сохранить") }
+            ) { Text(stringResource(R.string.action_save)) }
         },
         dismissButton = {
-            TextButton(onClick = onDismiss) { Text("Отмена") }
+            TextButton(onClick = onDismiss) { Text(stringResource(R.string.action_cancel)) }
         },
     )
 }

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="title_stations">基站</string>
+    <string name="action_refresh">刷新状态</string>
+    <string name="action_add">添加</string>
+    <string name="action_all_on">全部开启</string>
+    <string name="action_all_sleep">全部休眠</string>
+    <string name="empty_title">暂无基站</string>
+    <string name="empty_body">请将基站接通电源，然后点按“添加”。支持 v1.0（HTC Vive）和 v2.0（Valve Index 等）。</string>
+    <string name="msg_bluetooth_required">没有蓝牙权限，应用将无法工作</string>
+    <string name="msg_command_failed">“%1$s”：命令执行失败</string>
+
+    <string name="action_on">开启</string>
+    <string name="action_standby">待机</string>
+    <string name="action_sleep">休眠</string>
+    <string name="action_menu">菜单</string>
+    <string name="action_edit_v1">修改名称 / ID</string>
+    <string name="action_rename">重命名</string>
+    <string name="action_delete">删除</string>
+    <string name="action_cancel">取消</string>
+    <string name="action_save">保存</string>
+    <string name="action_retry">重试</string>
+    <string name="delete_title">删除“%1$s”？</string>
+    <string name="delete_body">之后可以通过搜索重新添加该基站。</string>
+
+    <string name="power_state_on">运行中</string>
+    <string name="power_state_booting">启动中</string>
+    <string name="power_state_standby">待机</string>
+    <string name="power_state_sleep">休眠</string>
+
+    <string name="scan_title">搜索基站</string>
+    <string name="scan_hint">基站必须接通电源。请让手机靠近基站。</string>
+    <string name="scan_empty">未找到新的基站。已添加的基站不会在此显示。在 Android 11 及更低版本上，搜索需要开启位置信息。</string>
+    <string name="scan_item_details">%1$s · 信号 %2$d dBm</string>
+    <string name="dialog_add_title">添加基站</string>
+    <string name="dialog_edit_title">编辑基站</string>
+    <string name="field_label">名称</string>
+    <string name="field_label_hint">例如“左侧”</string>
+    <string name="field_id">基站 ID</string>
+    <string name="field_id_hint">8 个字符，例如 1A2B3C4D</string>
+    <string name="id_help_empty">印在基站背面</string>
+    <string name="id_help_invalid">必须正好 8 个字符：0–9 和 A–F</string>
+    <string name="id_help_mismatch">基站名称以 %1$s 结尾，请检查 ID</string>
+    <string name="id_help_ok">ID 看起来正确</string>
+
+    <string name="tile_label">基站</string>
+    <string name="tile_subtitle_on">已开启</string>
+    <string name="tile_subtitle_sleep">休眠</string>
+
+    <string name="notif_channel">基站控制</string>
+    <string name="notif_sending">正在向基站发送命令…</string>
+
+    <string name="err_scan">扫描出错</string>
+    <string name="err_scan_code">扫描出错（代码 %1$d）</string>
+    <string name="err_bt_off">蓝牙已关闭</string>
+    <string name="err_no_id">未设置基站 ID</string>
+    <string name="err_no_response">基站无响应</string>
+    <string name="err_unknown">未知错误</string>
+    <string name="err_connect_start">无法开始连接</string>
+    <string name="err_discover_start">无法开始搜索服务</string>
+    <string name="err_write_start">无法发送命令</string>
+    <string name="err_read_start">无法读取状态</string>
+    <string name="err_closed">连接已关闭</string>
+    <string name="err_not_connected">未连接</string>
+    <string name="err_char_missing">未找到所需的特征值——这确实是基站吗？</string>
+    <string name="err_link_lost">与基站的连接已断开（代码 %1$d）</string>
+    <string name="err_discover">服务搜索出错（代码 %1$d）</string>
+    <string name="err_write">基站拒绝了命令（代码 %1$d）</string>
+    <string name="err_read">读取出错（代码 %1$d）</string>
+</resources>

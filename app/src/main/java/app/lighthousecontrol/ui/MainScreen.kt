@@ -42,11 +42,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import app.lighthousecontrol.BlePermissions
+import app.lighthousecontrol.R
 import app.lighthousecontrol.StationStatus
 import app.lighthousecontrol.ble.PowerAction
 import app.lighthousecontrol.data.Station
@@ -81,7 +83,7 @@ fun MainScreen(vm: MainViewModel = viewModel()) {
         if (result.values.all { it }) {
             action?.invoke()
         } else {
-            scope.launch { snackbar.showSnackbar("Без доступа к Bluetooth приложение не сможет работать") }
+            scope.launch { snackbar.showSnackbar(context.getString(R.string.msg_bluetooth_required)) }
         }
     }
 
@@ -110,11 +112,11 @@ fun MainScreen(vm: MainViewModel = viewModel()) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Базовые станции") },
+                title = { Text(stringResource(R.string.title_stations)) },
                 actions = {
                     if (stations.isNotEmpty()) {
                         IconButton(onClick = { withBluetooth { vm.refresh() } }) {
-                            Icon(Icons.Default.Refresh, contentDescription = "Обновить состояние")
+                            Icon(Icons.Default.Refresh, contentDescription = stringResource(R.string.action_refresh))
                         }
                     }
                 },
@@ -129,7 +131,7 @@ fun MainScreen(vm: MainViewModel = viewModel()) {
                     }
                 },
                 icon = { Icon(Icons.Default.Add, contentDescription = null) },
-                text = { Text("Добавить") },
+                text = { Text(stringResource(R.string.action_add)) },
             )
         },
         snackbarHost = { SnackbarHost(snackbar) },
@@ -190,16 +192,16 @@ fun MainScreen(vm: MainViewModel = viewModel()) {
     deleting?.let { station ->
         AlertDialog(
             onDismissRequest = { deleting = null },
-            title = { Text("Удалить «${station.label}»?") },
-            text = { Text("Станцию можно будет добавить снова через поиск.") },
+            title = { Text(stringResource(R.string.delete_title, station.label)) },
+            text = { Text(stringResource(R.string.delete_body)) },
             confirmButton = {
                 TextButton(onClick = {
                     vm.removeStation(station.mac)
                     deleting = null
-                }) { Text("Удалить") }
+                }) { Text(stringResource(R.string.action_delete)) }
             },
             dismissButton = {
-                TextButton(onClick = { deleting = null }) { Text("Отмена") }
+                TextButton(onClick = { deleting = null }) { Text(stringResource(R.string.action_cancel)) }
             },
         )
     }
@@ -216,13 +218,13 @@ private fun AllStationsControls(onAllOn: () -> Unit, onAllSleep: () -> Unit) {
             modifier = Modifier
                 .weight(1f)
                 .height(56.dp),
-        ) { Text("Включить все") }
+        ) { Text(stringResource(R.string.action_all_on)) }
         FilledTonalButton(
             onClick = onAllSleep,
             modifier = Modifier
                 .weight(1f)
                 .height(56.dp),
-        ) { Text("Усыпить все") }
+        ) { Text(stringResource(R.string.action_all_sleep)) }
     }
 }
 
@@ -235,11 +237,10 @@ private fun EmptyState(modifier: Modifier = Modifier) {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Text("Станций пока нет", style = MaterialTheme.typography.titleLarge)
+        Text(stringResource(R.string.empty_title), style = MaterialTheme.typography.titleLarge)
         Spacer(Modifier.height(8.dp))
         Text(
-            "Включите базовые станции в розетку и нажмите «Добавить». " +
-                "Поддерживаются v1.0 (HTC Vive) и v2.0 (Valve Index и др.).",
+            stringResource(R.string.empty_body),
             style = MaterialTheme.typography.bodyMedium,
             textAlign = TextAlign.Center,
             color = MaterialTheme.colorScheme.onSurfaceVariant,

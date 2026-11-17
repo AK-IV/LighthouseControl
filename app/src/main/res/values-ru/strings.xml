@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="title_stations">Базовые станции</string>
+    <string name="action_refresh">Обновить состояние</string>
+    <string name="action_add">Добавить</string>
+    <string name="action_all_on">Включить все</string>
+    <string name="action_all_sleep">Усыпить все</string>
+    <string name="empty_title">Станций пока нет</string>
+    <string name="empty_body">Включите базовые станции в розетку и нажмите «Добавить». Поддерживаются v1.0 (HTC Vive) и v2.0 (Valve Index и др.).</string>
+    <string name="msg_bluetooth_required">Без доступа к Bluetooth приложение не сможет работать</string>
+    <string name="msg_command_failed">«%1$s»: команда не прошла</string>
+
+    <string name="action_on">Вкл</string>
+    <string name="action_standby">Standby</string>
+    <string name="action_sleep">Сон</string>
+    <string name="action_menu">Меню</string>
+    <string name="action_edit_v1">Изменить название / ID</string>
+    <string name="action_rename">Переименовать</string>
+    <string name="action_delete">Удалить</string>
+    <string name="action_cancel">Отмена</string>
+    <string name="action_save">Сохранить</string>
+    <string name="action_retry">Повторить</string>
+    <string name="delete_title">Удалить «%1$s»?</string>
+    <string name="delete_body">Станцию можно будет добавить снова через поиск.</string>
+
+    <string name="power_state_on">Работает</string>
+    <string name="power_state_booting">Запуск</string>
+    <string name="power_state_standby">Standby</string>
+    <string name="power_state_sleep">Сон</string>
+
+    <string name="scan_title">Поиск станций</string>
+    <string name="scan_hint">Станции должны быть включены в розетку. Держите телефон поближе к ним.</string>
+    <string name="scan_empty">Новых станций не найдено. Уже добавленные станции здесь не показываются. На Android 11 и ниже для поиска нужна включённая геолокация.</string>
+    <string name="scan_item_details">%1$s · сигнал %2$d dBm</string>
+    <string name="dialog_add_title">Добавить станцию</string>
+    <string name="dialog_edit_title">Изменить станцию</string>
+    <string name="field_label">Название</string>
+    <string name="field_label_hint">Например, «Левая»</string>
+    <string name="field_id">ID станции</string>
+    <string name="field_id_hint">8 символов, например 1A2B3C4D</string>
+    <string name="id_help_empty">Напечатан на задней стороне станции</string>
+    <string name="id_help_invalid">Нужно ровно 8 символов: 0–9 и A–F</string>
+    <string name="id_help_mismatch">Имя станции заканчивается на %1$s — проверьте ID</string>
+    <string name="id_help_ok">ID выглядит корректно</string>
+
+    <string name="tile_label">Базовые станции</string>
+    <string name="tile_subtitle_on">Включены</string>
+    <string name="tile_subtitle_sleep">Сон</string>
+
+    <string name="notif_channel">Управление станциями</string>
+    <string name="notif_sending">Отправка команды станциям…</string>
+
+    <string name="err_scan">Ошибка сканирования</string>
+    <string name="err_scan_code">Ошибка сканирования (код %1$d)</string>
+    <string name="err_bt_off">Bluetooth выключен</string>
+    <string name="err_no_id">Не задан ID станции</string>
+    <string name="err_no_response">Станция не ответила</string>
+    <string name="err_unknown">Неизвестная ошибка</string>
+    <string name="err_connect_start">Не удалось начать подключение</string>
+    <string name="err_discover_start">Не удалось запустить поиск сервисов</string>
+    <string name="err_write_start">Не удалось отправить команду</string>
+    <string name="err_read_start">Не удалось прочитать состояние</string>
+    <string name="err_closed">Соединение закрыто</string>
+    <string name="err_not_connected">Нет подключения</string>
+    <string name="err_char_missing">Нужная характеристика не найдена — это точно базовая станция?</string>
+    <string name="err_link_lost">Связь со станцией потеряна (код %1$d)</string>
+    <string name="err_discover">Ошибка поиска сервисов (код %1$d)</string>
+    <string name="err_write">Станция не приняла команду (код %1$d)</string>
+    <string name="err_read">Ошибка чтения (код %1$d)</string>
+</resources>

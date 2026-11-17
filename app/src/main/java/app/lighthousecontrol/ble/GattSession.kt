@@ -9,6 +9,7 @@ import android.bluetooth.BluetoothProfile
 import android.bluetooth.BluetoothStatusCodes
 import android.content.Context
 import android.os.Build
+import app.lighthousecontrol.R
 import kotlinx.coroutines.CompletableDeferred
 import java.io.IOException
 import java.util.UUID
@@ -33,13 +34,13 @@ internal class GattSession(
 
     suspend fun connect() {
         gatt = device.connectGatt(context, false, this, BluetoothDevice.TRANSPORT_LE)
-            ?: throw IOException("Не удалось начать подключение")
+            ?: throw IOException(context.getString(R.string.err_connect_start))
         connected.await()
     }
 
     suspend fun discover() {
         val g = requireGatt()
-        if (!g.discoverServices()) throw IOException("Не удалось запустить поиск сервисов")
+        if (!g.discoverServices()) throw IOException(context.getString(R.string.err_discover_start))
         discovered.await()
     }
 
@@ -60,7 +61,7 @@ internal class GattSession(
         } else {
             legacyWrite(g, ch, value, writeType)
         }
-        if (!started) throw IOException("Не удалось отправить команду")
+        if (!started) throw IOException(context.getString(R.string.err_write_start))
         result.await()
     }
 
@@ -69,7 +70,7 @@ internal class GattSession(
         val ch = findCharacteristic(uuid)
         val result = CompletableDeferred<ByteArray>()
         pendingRead = result
-        if (!g.readCharacteristic(ch)) throw IOException("Не удалось прочитать состояние")
+        if (!g.readCharacteristic(ch)) throw IOException(context.getString(R.string.err_read_start))
         return result.await()
     }
 
@@ -78,16 +79,16 @@ internal class GattSession(
         gatt = null
         runCatching { g.disconnect() }
         runCatching { g.close() }
-        failAll(IOException("Соединение закрыто"))
+        failAll(IOException(context.getString(R.string.err_closed)))
     }
 
     // --- внутреннее ---
 
-    private fun requireGatt(): BluetoothGatt = gatt ?: throw IOException("Нет подключения")
+    private fun requireGatt(): BluetoothGatt = gatt ?: throw IOException(context.getString(R.string.err_not_connected))
 
     private fun findCharacteristic(uuid: UUID): BluetoothGattCharacteristic =
         requireGatt().services?.firstNotNullOfOrNull { it.getCharacteristic(uuid) }
-            ?: throw IOException("Нужная характеристика не найдена — это точно базовая станция?")
+            ?: throw IOException(context.getString(R.string.err_char_missing))
 
     @Suppress("DEPRECATION")
     private fun legacyWrite(
@@ -114,7 +115,7 @@ internal class GattSession(
         if (status == BluetoothGatt.GATT_SUCCESS && newState == BluetoothProfile.STATE_CONNECTED) {
             connected.complete(Unit)
         } else {
-            failAll(IOException("Связь со станцией потеряна (код $status)"))
+            failAll(IOException(context.getString(R.string.err_link_lost, status)))
         }
     }
 
@@ -122,7 +123,7 @@ internal class GattSession(
         if (status == BluetoothGatt.GATT_SUCCESS) {
             discovered.complete(Unit)
         } else {
-            discovered.completeExceptionally(IOException("Ошибка поиска сервисов (код $status)"))
+            discovered.completeExceptionally(IOException(context.getString(R.string.err_discover, status)))
         }
     }
 
@@ -135,7 +136,7 @@ internal class GattSession(
         if (status == BluetoothGatt.GATT_SUCCESS) {
             d.complete(Unit)
         } else {
-            d.completeExceptionally(IOException("Станция не приняла команду (код $status)"))
+            d.completeExceptionally(IOException(context.getString(R.string.err_write, status)))
         }
     }
 
@@ -167,7 +168,7 @@ internal class GattSession(
         if (status == BluetoothGatt.GATT_SUCCESS) {
             d.complete(value)
         } else {
-            d.completeExceptionally(IOException("Ошибка чтения (код $status)"))
+            d.completeExceptionally(IOException(context.getString(R.string.err_read, status)))
         }
     }
 }

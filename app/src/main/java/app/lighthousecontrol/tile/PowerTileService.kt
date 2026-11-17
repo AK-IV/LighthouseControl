@@ -9,6 +9,7 @@ import android.service.quicksettings.Tile
 import android.service.quicksettings.TileService
 import app.lighthousecontrol.BlePermissions
 import app.lighthousecontrol.MainActivity
+import app.lighthousecontrol.R
 import app.lighthousecontrol.ble.PowerAction
 import app.lighthousecontrol.lighthouseApp
 import app.lighthousecontrol.work.PowerAllWorker
@@ -46,9 +47,9 @@ class PowerTileService : TileService() {
         val tile = qsTile ?: return
         val on = lighthouseApp.repository.lastAllAction == PowerAction.ON
         tile.state = if (on) Tile.STATE_ACTIVE else Tile.STATE_INACTIVE
-        tile.label = "Базовые станции"
+        tile.label = getString(R.string.tile_label)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            tile.subtitle = if (on) "Включены" else "Сон"
+            tile.subtitle = getString(if (on) R.string.tile_subtitle_on else R.string.tile_subtitle_sleep)
         }
         tile.updateTile()
     }

@@ -1,5 +1,8 @@
 package app.lighthousecontrol.data
 
+import androidx.annotation.StringRes
+import app.lighthousecontrol.R
+
 /** Версия базовой станции. */
 enum class StationType(val title: String) {
     V1("v1.0"),
@@ -20,10 +23,10 @@ data class Station(
 )
 
 /** Состояние питания станции. */
-enum class StationPowerState(val title: String) {
-    UNKNOWN("—"),
-    ON("Работает"),
-    BOOTING("Запуск"),
-    STANDBY("Standby"),
-    SLEEP("Сон"),
+enum class StationPowerState(@StringRes val titleRes: Int) {
+    UNKNOWN(R.string.power_state_unknown),
+    ON(R.string.power_state_on),
+    BOOTING(R.string.power_state_booting),
+    STANDBY(R.string.power_state_standby),
+    SLEEP(R.string.power_state_sleep),
 }

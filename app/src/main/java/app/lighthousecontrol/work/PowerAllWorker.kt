@@ -43,11 +43,15 @@ class PowerAllWorker(
     override suspend fun getForegroundInfo(): ForegroundInfo {
         val nm = applicationContext.getSystemService(NotificationManager::class.java)
         nm.createNotificationChannel(
-            NotificationChannel(CHANNEL_ID, "Управление станциями", NotificationManager.IMPORTANCE_LOW)
+            NotificationChannel(
+                CHANNEL_ID,
+                applicationContext.getString(R.string.notif_channel),
+                NotificationManager.IMPORTANCE_LOW,
+            )
         )
         val notification = NotificationCompat.Builder(applicationContext, CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_lighthouse)
-            .setContentTitle("Отправка команды станциям…")
+            .setContentTitle(applicationContext.getString(R.string.notif_sending))
             .setOngoing(true)
             .build()
         return ForegroundInfo(NOTIFICATION_ID, notification)

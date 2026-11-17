@@ -53,7 +53,7 @@ object LighthouseProtocol {
     }
 
     fun v1Command(action: PowerAction, id: String): ByteArray {
-        val normalized = requireNotNull(normalizeV1Id(id)) { "Некорректный ID станции: $id" }
+        val normalized = requireNotNull(normalizeV1Id(id)) { "Invalid station ID: $id" }
         val idValue = normalized.toLong(16)
         val cmd = ByteArray(20)
         cmd[0] = 0x12
@@ -65,7 +65,7 @@ object LighthouseProtocol {
                 cmd[1] = 0x02; cmd[2] = 0x00; cmd[3] = 0x01
             }
             PowerAction.STANDBY ->
-                throw IllegalArgumentException("Станции v1.0 не поддерживают standby")
+                throw IllegalArgumentException("v1.0 stations do not support standby")
         }
         for (i in 0 until 4) {
             cmd[4 + i] = ((idValue shr (8 * i)) and 0xFF).toByte()

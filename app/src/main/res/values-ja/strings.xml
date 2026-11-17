@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="title_stations">ベースステーション</string>
+    <string name="action_refresh">状態を更新</string>
+    <string name="action_add">追加</string>
+    <string name="action_all_on">すべてオン</string>
+    <string name="action_all_sleep">すべてスリープ</string>
+    <string name="empty_title">ステーションがまだありません</string>
+    <string name="empty_body">ベースステーションを電源に接続し、「追加」をタップしてください。v1.0（HTC Vive）と v2.0（Valve Index など）に対応しています。</string>
+    <string name="msg_bluetooth_required">Bluetooth へのアクセスがないとアプリは動作できません</string>
+    <string name="msg_command_failed">「%1$s」：コマンドが失敗しました</string>
+
+    <string name="action_on">オン</string>
+    <string name="action_standby">スタンバイ</string>
+    <string name="action_sleep">スリープ</string>
+    <string name="action_menu">メニュー</string>
+    <string name="action_edit_v1">名前 / ID を編集</string>
+    <string name="action_rename">名前を変更</string>
+    <string name="action_delete">削除</string>
+    <string name="action_cancel">キャンセル</string>
+    <string name="action_save">保存</string>
+    <string name="action_retry">再試行</string>
+    <string name="delete_title">「%1$s」を削除しますか？</string>
+    <string name="delete_body">検索から再度追加できます。</string>
+
+    <string name="power_state_on">動作中</string>
+    <string name="power_state_booting">起動中</string>
+    <string name="power_state_standby">スタンバイ</string>
+    <string name="power_state_sleep">スリープ</string>
+
+    <string name="scan_title">ステーションを検索</string>
+    <string name="scan_hint">ステーションを電源に接続し、スマートフォンを近づけてください。</string>
+    <string name="scan_empty">新しいステーションは見つかりませんでした。追加済みのステーションはここに表示されません。Android 11 以前では、検索に位置情報をオンにする必要があります。</string>
+    <string name="scan_item_details">%1$s · 信号 %2$d dBm</string>
+    <string name="dialog_add_title">ステーションを追加</string>
+    <string name="dialog_edit_title">ステーションを編集</string>
+    <string name="field_label">名前</string>
+    <string name="field_label_hint">例：「左」</string>
+    <string name="field_id">ステーション ID</string>
+    <string name="field_id_hint">8 文字（例：1A2B3C4D）</string>
+    <string name="id_help_empty">ステーションの背面に印刷されています</string>
+    <string name="id_help_invalid">0–9 と A–F のちょうど 8 文字が必要です</string>
+    <string name="id_help_mismatch">ステーション名の末尾は %1$s です。ID を確認してください</string>
+    <string name="id_help_ok">ID は正しいようです</string>
+
+    <string name="tile_label">ベースステーション</string>
+    <string name="tile_subtitle_on">オン</string>
+    <string name="tile_subtitle_sleep">スリープ</string>
+
+    <string name="notif_channel">ステーション制御</string>
+    <string name="notif_sending">ステーションにコマンドを送信中…</string>
+
+    <string name="err_scan">スキャンエラー</string>
+    <string name="err_scan_code">スキャンエラー（コード %1$d）</string>
+    <string name="err_bt_off">Bluetooth がオフです</string>
+    <string name="err_no_id">ステーション ID が設定されていません</string>
+    <string name="err_no_response">ステーションが応答しません</string>
+    <string name="err_unknown">不明なエラー</string>
+    <string name="err_connect_start">接続を開始できませんでした</string>
+    <string name="err_discover_start">サービス検出を開始できませんでした</string>
+    <string name="err_write_start">コマンドを送信できませんでした</string>
+    <string name="err_read_start">状態を読み取れませんでした</string>
+    <string name="err_closed">接続が閉じられました</string>
+    <string name="err_not_connected">接続されていません</string>
+    <string name="err_char_missing">必要なキャラクタリスティックが見つかりません。本当にベースステーションですか？</string>
+    <string name="err_link_lost">ステーションとの接続が切れました（コード %1$d）</string>
+    <string name="err_discover">サービス検出エラー（コード %1$d）</string>
+    <string name="err_write">ステーションがコマンドを拒否しました（コード %1$d）</string>
+    <string name="err_read">読み取りエラー（コード %1$d）</string>
+</resources>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="title_stations">Basisstationen</string>
+    <string name="action_refresh">Status aktualisieren</string>
+    <string name="action_add">Hinzufügen</string>
+    <string name="action_all_on">Alle einschalten</string>
+    <string name="action_all_sleep">Alle in Ruhemodus</string>
+    <string name="empty_title">Noch keine Stationen</string>
+    <string name="empty_body">Schließe die Basisstationen an den Strom an und tippe auf „Hinzufügen“. Unterstützt werden v1.0 (HTC Vive) und v2.0 (Valve Index u. a.).</string>
+    <string name="msg_bluetooth_required">Ohne Bluetooth-Zugriff kann die App nicht funktionieren</string>
+    <string name="msg_command_failed">„%1$s“: Befehl fehlgeschlagen</string>
+
+    <string name="action_on">Ein</string>
+    <string name="action_standby">Standby</string>
+    <string name="action_sleep">Ruhe</string>
+    <string name="action_menu">Menü</string>
+    <string name="action_edit_v1">Name / ID ändern</string>
+    <string name="action_rename">Umbenennen</string>
+    <string name="action_delete">Löschen</string>
+    <string name="action_cancel">Abbrechen</string>
+    <string name="action_save">Speichern</string>
+    <string name="action_retry">Wiederholen</string>
+    <string name="delete_title">„%1$s“ löschen?</string>
+    <string name="delete_body">Die Station kann später über die Suche wieder hinzugefügt werden.</string>
+
+    <string name="power_state_on">Aktiv</string>
+    <string name="power_state_booting">Startet</string>
+    <string name="power_state_standby">Standby</string>
+    <string name="power_state_sleep">Ruhemodus</string>
+
+    <string name="scan_title">Stationen suchen</string>
+    <string name="scan_hint">Die Stationen müssen am Strom angeschlossen sein. Halte das Telefon in ihrer Nähe.</string>
+    <string name="scan_empty">Keine neuen Stationen gefunden. Bereits hinzugefügte Stationen werden hier nicht angezeigt. Unter Android 11 und älter muss für die Suche der Standort aktiviert sein.</string>
+    <string name="scan_item_details">%1$s · Signal %2$d dBm</string>
+    <string name="dialog_add_title">Station hinzufügen</string>
+    <string name="dialog_edit_title">Station bearbeiten</string>
+    <string name="field_label">Name</string>
+    <string name="field_label_hint">Z. B. „Links“</string>
+    <string name="field_id">Stations-ID</string>
+    <string name="field_id_hint">8 Zeichen, z. B. 1A2B3C4D</string>
+    <string name="id_help_empty">Steht auf der Rückseite der Station</string>
+    <string name="id_help_invalid">Genau 8 Zeichen erforderlich: 0–9 und A–F</string>
+    <string name="id_help_mismatch">Der Stationsname endet auf %1$s – bitte ID prüfen</string>
+    <string name="id_help_ok">ID sieht korrekt aus</string>
+
+    <string name="tile_label">Basisstationen</string>
+    <string name="tile_subtitle_on">Eingeschaltet</string>
+    <string name="tile_subtitle_sleep">Ruhemodus</string>
+
+    <string name="notif_channel">Stationssteuerung</string>
+    <string name="notif_sending">Befehl wird an Stationen gesendet…</string>
+
+    <string name="err_scan">Suchfehler</string>
+    <string name="err_scan_code">Suchfehler (Code %1$d)</string>
+    <string name="err_bt_off">Bluetooth ist ausgeschaltet</string>
+    <string name="err_no_id">Stations-ID nicht festgelegt</string>
+    <string name="err_no_response">Station antwortet nicht</string>
+    <string name="err_unknown">Unbekannter Fehler</string>
+    <string name="err_connect_start">Verbindung konnte nicht gestartet werden</string>
+    <string name="err_discover_start">Dienstsuche konnte nicht gestartet werden</string>
+    <string name="err_write_start">Befehl konnte nicht gesendet werden</string>
+    <string name="err_read_start">Status konnte nicht gelesen werden</string>
+    <string name="err_closed">Verbindung geschlossen</string>
+    <string name="err_not_connected">Nicht verbunden</string>
+    <string name="err_char_missing">Benötigte Charakteristik nicht gefunden – ist das wirklich eine Basisstation?</string>
+    <string name="err_link_lost">Verbindung zur Station verloren (Code %1$d)</string>
+    <string name="err_discover">Fehler bei der Dienstsuche (Code %1$d)</string>
+    <string name="err_write">Station hat den Befehl abgelehnt (Code %1$d)</string>
+    <string name="err_read">Lesefehler (Code %1$d)</string>
+</resources>

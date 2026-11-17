@@ -30,7 +30,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import app.lighthousecontrol.R
 import app.lighthousecontrol.StationStatus
 import app.lighthousecontrol.ble.PowerAction
 import app.lighthousecontrol.data.Station
@@ -61,15 +63,15 @@ fun StationCard(
                 StatusBadge(station, status)
                 Box {
                     IconButton(onClick = { menuOpen = true }) {
-                        Icon(Icons.Default.MoreVert, contentDescription = "Меню")
+                        Icon(Icons.Default.MoreVert, contentDescription = stringResource(R.string.action_menu))
                     }
                     DropdownMenu(expanded = menuOpen, onDismissRequest = { menuOpen = false }) {
                         DropdownMenuItem(
-                            text = { Text(if (station.type == StationType.V1) "Изменить название / ID" else "Переименовать") },
+                            text = { Text(stringResource(if (station.type == StationType.V1) R.string.action_edit_v1 else R.string.action_rename)) },
                             onClick = { menuOpen = false; onEdit() },
                         )
                         DropdownMenuItem(
-                            text = { Text("Удалить") },
+                            text = { Text(stringResource(R.string.action_delete)) },
                             onClick = { menuOpen = false; onDelete() },
                         )
                     }
@@ -88,19 +90,19 @@ fun StationCard(
                     onClick = { onAction(PowerAction.ON) },
                     enabled = enabled,
                     modifier = Modifier.weight(1f),
-                ) { Text("Вкл") }
+                ) { Text(stringResource(R.string.action_on)) }
                 if (station.type == StationType.V2) {
                     OutlinedButton(
                         onClick = { onAction(PowerAction.STANDBY) },
                         enabled = enabled,
                         modifier = Modifier.weight(1f),
-                    ) { Text("Standby") }
+                    ) { Text(stringResource(R.string.action_standby)) }
                 }
                 FilledTonalButton(
                     onClick = { onAction(PowerAction.SLEEP) },
                     enabled = enabled,
                     modifier = Modifier.weight(1f),
-                ) { Text("Сон") }
+                ) { Text(stringResource(R.string.action_sleep)) }
             }
         }
     }
@@ -119,6 +121,7 @@ private fun StatusBadge(station: Station, status: StationStatus) {
     }
     if (status.power == StationPowerState.UNKNOWN) return
     // v1.0 не сообщает состояние — показываем последнюю отправленную команду.
-    val label = if (station.type == StationType.V1) "${status.power.title}*" else status.power.title
+    val title = stringResource(status.power.titleRes)
+    val label = if (station.type == StationType.V1) "$title*" else title
     AssistChip(onClick = {}, label = { Text(label) })
 }

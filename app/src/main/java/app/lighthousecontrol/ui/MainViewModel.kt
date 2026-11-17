@@ -3,6 +3,7 @@ package app.lighthousecontrol.ui
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import app.lighthousecontrol.R
 import app.lighthousecontrol.ble.PowerAction
 import app.lighthousecontrol.ble.ScannedStation
 import app.lighthousecontrol.data.Station
@@ -61,7 +62,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             } catch (e: CancellationException) {
                 throw e
             } catch (e: Exception) {
-                _messages.tryEmit(e.message ?: "Ошибка сканирования")
+                _messages.tryEmit(e.message ?: app.getString(R.string.err_scan))
             } finally {
                 _scanning.value = false
             }
@@ -84,7 +85,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     fun power(station: Station, action: PowerAction) {
         viewModelScope.launch {
             if (!app.controller.apply(station, action)) {
-                _messages.tryEmit("«${station.label}»: команда не прошла")
+                _messages.tryEmit(app.getString(R.string.msg_command_failed, station.label))
             }
         }
     }
