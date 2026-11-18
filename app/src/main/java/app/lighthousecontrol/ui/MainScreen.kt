@@ -218,13 +218,13 @@ private fun AllStationsControls(onAllOn: () -> Unit, onAllSleep: () -> Unit) {
             modifier = Modifier
                 .weight(1f)
                 .height(56.dp),
-        ) { Text(stringResource(R.string.action_all_on)) }
+        ) { IconLabel(R.drawable.ic_power, stringResource(R.string.action_all_on)) }
         FilledTonalButton(
             onClick = onAllSleep,
             modifier = Modifier
                 .weight(1f)
                 .height(56.dp),
-        ) { Text(stringResource(R.string.action_all_sleep)) }
+        ) { IconLabel(R.drawable.ic_sleep, stringResource(R.string.action_all_sleep)) }
     }
 }
 
