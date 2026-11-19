@@ -21,6 +21,7 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withTimeout
 import java.io.IOException
+import kotlin.time.Duration.Companion.milliseconds
 
 data class ScannedStation(
     val mac: String,
@@ -99,7 +100,7 @@ class LighthouseBle(private val context: Context) {
         val a = adapter?.takeIf { it.isEnabled } ?: throw IOException(context.getString(R.string.err_bt_off))
         val session = GattSession(context, a.getRemoteDevice(mac))
         try {
-            return withTimeout(SESSION_TIMEOUT_MS) {
+            return withTimeout(SESSION_TIMEOUT_MS.milliseconds) {
                 session.connect()
                 session.discover()
                 block(session)
@@ -122,7 +123,7 @@ class LighthouseBle(private val context: Context) {
             } catch (e: Exception) {
                 last = e
             }
-            delay(RETRY_DELAY_MS * (attempt + 1))
+            delay((RETRY_DELAY_MS * (attempt + 1)).milliseconds)
         }
         throw last ?: IOException(context.getString(R.string.err_unknown))
     }

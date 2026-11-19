@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import org.json.JSONArray
 import org.json.JSONObject
+import androidx.core.content.edit
 
 /**
  * Stores the station list (MAC, type, name, v1 ID) in SharedPreferences.
@@ -25,7 +26,7 @@ class StationRepository(context: Context) {
         get() = prefs.getString(KEY_LAST_ALL, null)
             ?.let { runCatching { PowerAction.valueOf(it) }.getOrNull() }
         set(value) {
-            prefs.edit().putString(KEY_LAST_ALL, value?.name).apply()
+            prefs.edit { putString(KEY_LAST_ALL, value?.name) }
         }
 
     fun upsert(station: Station) {
@@ -56,7 +57,7 @@ class StationRepository(context: Context) {
                     .put("v1Id", s.v1Id ?: JSONObject.NULL)
             )
         }
-        prefs.edit().putString(KEY_STATIONS, array.toString()).apply()
+        prefs.edit { putString(KEY_STATIONS, array.toString()) }
     }
 
     private fun load(): List<Station> {
