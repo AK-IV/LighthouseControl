@@ -1,0 +1,82 @@
+name: Build and Release APK
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Decode release keystore
+        env:
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        run: |
+          for var in KEYSTORE_BASE64 KEYSTORE_PASSWORD KEY_ALIAS KEY_PASSWORD; do
+            if [ -z "${!var}" ]; then
+              echo "::error::Missing required GitHub Secret: $var"
+              exit 1
+            fi
+          done
+          printf '%s' "$KEYSTORE_BASE64" | tr -d '[:space:]' | base64 --decode > "${RUNNER_TEMP}/release.jks"
+
+      - name: Build signed release APK
+        env:
+          KEYSTORE_PATH: ${{ runner.temp }}/release.jks
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        run: ./gradlew :app:assembleRelease --no-daemon
+
+      - name: Remove decoded keystore
+        if: always()
+        run: rm -f "${RUNNER_TEMP}/release.jks"
+
+      - name: Prepare release APK
+        run: |
+          APK_SRC="app/build/outputs/apk/release/app-release.apk"
+          if [ ! -f "$APK_SRC" ]; then
+            echo "::error::Signed release APK not found at $APK_SRC"
+            ls -la app/build/outputs/apk/release/ || true
+            exit 1
+          fi
+          cp "$APK_SRC" "LighthouseControl-${GITHUB_REF_NAME}.apk"
+
+      - name: Verify APK signature
+        run: |
+          APKSIGNER=$(find "$ANDROID_HOME/build-tools" -name apksigner | sort -V | tail -n 1)
+          "$APKSIGNER" verify --verbose "LighthouseControl-${GITHUB_REF_NAME}.apk"
+
+      - name: Publish GitHub Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          APK_FILE="LighthouseControl-${GITHUB_REF_NAME}.apk"
+          if gh release view "${GITHUB_REF_NAME}" >/dev/null 2>&1; then
+            gh release upload "${GITHUB_REF_NAME}" "$APK_FILE" --clobber
+          else
+            gh release create "${GITHUB_REF_NAME}" \
+              "$APK_FILE" \
+              --title "Lighthouse Control ${GITHUB_REF_NAME}" \
+              --generate-notes
+          fi

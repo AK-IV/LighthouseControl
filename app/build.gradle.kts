@@ -1,8 +1,21 @@
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("org.jetbrains.kotlin.plugin.compose")
 }
+
+val keystorePropertiesFile = rootProject.file("keystore.properties")
+val keystoreProperties = Properties().apply {
+    if (keystorePropertiesFile.exists()) {
+        keystorePropertiesFile.inputStream().use { load(it) }
+    }
+}
+
+fun signingProp(propName: String, envName: String): String? =
+    keystoreProperties.getProperty(propName)?.takeIf { it.isNotBlank() }
+        ?: System.getenv(envName)?.takeIf { it.isNotBlank() }
 
 android {
     namespace = "app.lighthousecontrol"
@@ -13,12 +26,28 @@ android {
         minSdk = 26
         targetSdk = 35
         versionCode = 1
-        versionName = "0.1"
+        versionName = "1.0.0"
+    }
+
+    signingConfigs {
+        create("release") {
+            val storePath = signingProp("storeFile", "KEYSTORE_PATH")
+            if (storePath != null) {
+                storeFile = rootProject.file(storePath)
+            }
+            storePassword = signingProp("storePassword", "KEYSTORE_PASSWORD")
+            keyAlias = signingProp("keyAlias", "KEY_ALIAS")
+            keyPassword = signingProp("keyPassword", "KEY_PASSWORD")
+        }
     }
 
     buildTypes {
         release {
             isMinifyEnabled = false
+            val releaseSigning = signingConfigs.getByName("release")
+            if (releaseSigning.storeFile?.exists() == true) {
+                signingConfig = releaseSigning
+            }
         }
     }
 
